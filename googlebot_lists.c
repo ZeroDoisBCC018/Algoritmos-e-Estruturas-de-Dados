@@ -2,25 +2,29 @@
 #define SUCCESS 1
 #define TRUE 1
 #define FALSE 0
-#include "googlebot_lists.h"
+#include "googlebot.h"
 #include <stddef.h> 
 #include <stdlib.h>
 #include <stdio.h>
-
-
 #define boolean int
-
-
 
 NODE* GB_NewNode (void) {
 	NODE* new = (NODE*) malloc(sizeof (NODE));
+	if (new == NULL){
+		perror("Fatal error: not enough memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	new->next = NULL;
-	new->site = NULL;
+	new->site = NULL; 
 	return new;
 }
 
 LIST* GB_NewList (void) {
     LIST* l = (LIST*) malloc(sizeof (LIST));
+    if (l == NULL){
+		perror("Fatal error: not enough memory.\n");
+		exit(EXIT_FAILURE);
+	} 
     l->first = NULL;
     l->last = NULL;
     l->size = 0;
@@ -103,7 +107,7 @@ NODE* GB_SearchCode (LIST* l, int code) {
 	else return aux;
 }
 
-/* REVER */
+/* REVIEW */
 int GB_UpdateRelevance (LIST* l, int code, int newrel) {
 	if (GB_CheckEmptyList(l)) return ERROR;
 	else if (GB_CheckInvalidList(l)) return ERROR;

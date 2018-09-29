@@ -1,45 +1,39 @@
-#ifndef _GOOGLEBOTLIST_H_
-#define _GOOGLEBOTLIST_H_
+#ifndef _GOOGLEBOT_H_
+#define _GOOGLEBOT_H_
 
 #include <stddef.h> 
 #include <stdlib.h>
 #include <stdio.h>
-
-
 #define boolean int
-#define CSV FILE*
 
+typedef FILE* CSV;
 
 typedef struct site_ SITE;
 typedef struct node_ NODE;
+typedef struct list_ LIST;
 
-/*A NODE struct contains a SITE* and a NODE* for the next node in the list.
-typedef struct node_ NODE;
-A LIST struct contains an int for the size, one NODE* for the first node 
- and one for the last node on the list
-typedef struct list_ LIST;*/
+/* A NODE struct contains a SITE pointer and a NODE pointer for the next node in the list. */
 struct node_ {
     SITE* site;
     struct node_ * next;
 };
 
+/* A LIST struct contains an integer for the size, one NODE pointer for the first node 
+ * and one for the last node on the list. */
 typedef struct list_ {
     NODE* first;
     NODE* last;
     int size;
 }LIST;
-/*data structure for storing site information, gathered from the csv file
-typedef struct site_ SITE;*/
 
+/* Data structure for storing site properties, gathered from the csv file. */
 struct site_ {
 	int code;
-	const char* name;
+	char* name;
 	int relev;
-	const char* link;
-	const char keyw[10][50];
+	char* link;
+	char keyw[10][50];
 };
-
-
 
 NODE* GB_NewNode(void);
 
@@ -52,63 +46,55 @@ boolean GB_CheckInvalidList(LIST* l);
 
 int GB_EraseList(LIST* l);
 
-/*Insert node at the first position of the list.*/
+/* Insert node at the first position of the list. */
 int GB_InsertNodeFirstPos(LIST* l, NODE* n);
 
-/*Insert node at the last position of the list.*/
+/* Insert node at the last position of the list. */
 int GB_InsertNodeLastPos(LIST* l, NODE* n);
 
 int GB_CountListSize(LIST* l);
 
-/*Search a site on the list by its code.*/
+/* Search a site on the list by its code. */
 NODE* GB_SearchCode(LIST* l, int code);
 
-/*Sort the list by site codes using a merge sort algorithm. This is the sort function.*/
+/* These 2 functions are part of the list sorting algorithm. It is a mergesort-like algorithm. */
 void GB_Sort(LIST* l);
-
-/*Merge function for the merge sort algorithm.*/
 LIST* GB_Merge(LIST* lfirst, LIST* lsecond);
 
-/*Update the relevance of a choosen site.*/
+/* Update the relevance of a choosen site. */
 int GB_UpdateRelevance(LIST* l, int code, int newrel);
 
-/*Insert node at an X specific position of the list.*/
+/* Insert node at an X specific position of the list. */
 int InsertNodeAtPosition (LIST* l, NODE* n, int code);
 
-/*Insert keyword at X specific code of the list)*/
-int InsertKeyWord(LIST* l, int code);
+/* Insert keyword at X specific code of the list). */
+int GB_InsertKeyWord(LIST* l, int code);
 
-
-
-
-/*reads site information from standard input*/
+/* Reads site information from standard input. */
 int GB_GetSiteStdin(LIST* l);
 
-/*inserts site information in structure pointed to by a given list position*/
+/* Inserts site information in structure pointed to by a given list position. */
 int GB_InsertSite(LIST* l, int pos);
 
-/*removes a site from list according to its code*/
+/* Removes a site from list according to its code. */
 int GB_RemoveSite(LIST* l, int code);
 
-
-
-/*checks validity for codes of new site entries*/
+/* Checks validity for codes of new site entries. */
 int GB_CodeCheck (int code, LIST* l);
 
-/*opens CSV file with read permission*/
-CSV GB_OpenCSVread (CSV fp, char* filename);
+/* Opens CSV file with read permission. */
+CSV GB_OpenCSVread (char* filename);
 
-/*opens CSV file and erases its original content, so it can be rewritten with updated data from structs*/
+/* Opens CSV file and erases its original content, so it can be rewritten with updated data from the site list. */
 CSV GB_OpenCSVWrite (CSV fp, char* filename);
 
-/*closes opened CSV file*/
-void GB_CloseCSV();
+/* Closes opened CSV file. */
+int GB_CloseCSV();
 
-/*reads CSV file and stores its data in site structs*/
+/* Reads CSV file and stores its data in site data structures. */
 int GB_ReadCSV (CSV fp, LIST* s);
 
-/*prints updated struct data into original CSV file*/
+/* Prints updated struct data into original CSV file*/
 int GB_UpdateDataBase (CSV fp, char* filename, LIST* l);
-
 
 #endif

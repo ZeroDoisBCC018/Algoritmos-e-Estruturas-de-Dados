@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "googlebot_lists.h"
-#include "googlebot_ds.c"
-#define CSV FILE*
+#include "googlebot.h"
+
+typedef FILE* CSV;
 
 LIST* l;
 
@@ -121,7 +121,8 @@ void new_keyw(void){
 	int code = fscanf(stdin, "%d", &code);
 	fprintf(stdout, "Now insert the new tags: (max of 10 keywords, each up to 50 characters)\n");
 	
-	if (GB_InsertKeyword(l, code) != 1){
+	int e = GB_InsertKeyWord(l, code);
+	if (e != 1){
 		fprintf(stdout, "New keywords could not be inserted. Returning to the Modify Database menu section.\n");
 		return;
 	} else {
@@ -216,23 +217,28 @@ void error_no_name(void){
 	fprintf(stdout, "No filename given!\n");
 	fprintf(stdout, "Instructions on how to use GBSiteRelevance:\n");
 	fprintf(stdout, "On console command line, type: ");
-	fprintf(stdout, "./GBSiteRelevance <csv_file>\n");
+	fprintf(stdout, "./Googlebot\n");
+	fprintf(stdout, "*Welcoming messages, menu, instructions and*\n");
+	fprintf(stdout, "<.csv filename here> (FILENAME MUST BE UP TO 50 CHARACTERS)\n");
 	fprintf(stdout, "If the filename input is a nonexistent file\n");
 	fprintf(stdout, "an empty new one with this name will be created.\n");
 }
 
 int main(int argc, char* argv[]){
 	
-	if (argv[1] == NULL){ 
+	fprintf(stdout, "Please insert the name of your .csv file:\n");
+	
+	char* fn = NULL;
+	fscanf(stdin, "%m[^\n]", &fn);
+	
+	if (strcmp(fn, "") == 0 || strcmp(fn, "\n") == 0){ 
 		error_no_name();
 		perror("Input error: missing filename.\n");
 		exit(EXIT_FAILURE);
 	} 
 	
-	char* fn = (char*)malloc(50*sizeof(char));
-	strcpy(fn, argv[1]);
-	
-	CSV fp = GB_OpenCSVread(fp, fn);
+	CSV fp;
+	fp = GB_OpenCSVread(fn);
 	l = GB_NewList();
 	GB_ReadCSV(fp, l);
 	

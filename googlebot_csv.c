@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "googlebot_lists.h"
+#include "googlebot.h"
 #define boolean int
 
 
@@ -14,19 +14,20 @@ int GB_CodeCheck (int code, LIST* l){
 	if (GB_CheckInvalidList(l)) return ERROR;
 	if (GB_CheckEmptyList(l)) return ERROR;
 	if (code <= 0 || code > 9999) return ERROR;
-	NODE* aux = l->first; /*nao é mais array*/
+	NODE* aux = l->first; 
 	while (aux != NULL){
-		if (aux->site->code == code) return ERROR; /* esse trecho ficou otimo mas coloca else so por garantia*/
-		aux = aux->next;
+		if (aux->site->code == code) return ERROR; 
+		else aux = aux->next;
 	}
 	return SUCCESS;
 }
 
-CSV GB_OpenCSVread (CSV fp, char* filename){
+CSV GB_OpenCSVread (char* filename){
 	if(filename == NULL){
 		perror(".csv filename not given.\n");
 		exit(EXIT_FAILURE);
 	}
+	CSV fp;
 	fp = fopen(filename, "r");
 	if(fp == NULL){
 		perror(".csv file could not be opened. Not enough memory/fatal error ocurred while trying to access the disk.\n");
@@ -40,7 +41,7 @@ CSV GB_OpenCSVwrite (CSV fp, char* filename){
 		perror(".csv filename not given.\n");
 		exit(EXIT_FAILURE);
 	}
-	fp = fopen(filename, "w"); /* aqui tem que ser "r+" pq "w" sempre cria uma empty file */
+	fp = fopen(filename, "w"); 
 	if(fp == NULL){
 		perror(".csv file could not be opened. Not enough memory/fatal error ocurred while trying to access the disk.\n");
 		exit(EXIT_FAILURE);
@@ -48,32 +49,33 @@ CSV GB_OpenCSVwrite (CSV fp, char* filename){
 	return fp;
 }
 
-void GB_CloseCSV (CSV fp){
+int GB_CloseCSV (CSV fp){
 	if(fp == NULL){
-		perror("no .csv file oṕened."); /*nao precisa quitar do programa, so da return na funcao*/
-		exit(EXIT_FAILURE);
+		perror("no .csv file opened.");
+		return ERROR;
 	}
 	
 	fclose(fp);
+	return SUCCESS;
 }
 
 int GB_ReadCSV (CSV fp, LIST* l){
 	if (GB_CheckInvalidList(l)) return ERROR;
-	if (GB_CheckEmptyList(0)) return ERROR; /*Checks if the list isn't empty*/
+	if (GB_CheckEmptyList(0)) return ERROR; 
 	
 	int i = 0, j = 0, k = 0;
-	char dump = ' '; // dump is initialized as blank space so it certainly enters the reading loop on line x
+	char dump = ' '; /* Dump is initialized as a blank space so it certainly enters the reading loop on line x. */
 	if(fp == NULL){
 		perror("File not opened.\n");
 		return ERROR;
 	}
 	char ignoreline[200];
-	fgets(ignoreline, 200, fp); /*Ignores the header from the CSV file*/
+	fgets(ignoreline, 200, fp); /* Ignores the header from the CSV file. */
 	int count1 = 0;
 	int count2 = 0;
 	fseek(fp, 0, SEEK_SET);
 	
-	while(dump != EOF){ 	/*This loop counts all the lines of the csv file and rewinds it before performing the reading operations*/
+	while(dump != EOF){ 	/* This loop counts all the lines of the csv file and rewinds it before performing the reading operations. */
 		fgets(ignoreline, 200, fp);
 		dump = fgetc(fp);
 		count1++;
@@ -81,15 +83,15 @@ int GB_ReadCSV (CSV fp, LIST* l){
 	rewind(fp);
 	
 	NODE* n;
-	n = GB_NewNode(); /*In this loop a number of nodes equivalent to the number of sites counted are created and linked*/
+	n = GB_NewNode(); /* In this loop a number of nodes equivalent to the number of sites counted are created and linked. */
 	while(count2 != count1){
 		n->next = GB_NewNode();
 		n = n->next;
 	}
-	n = l->first; /*now the node is reset to the first position of the list in order to  read the informations*/
+	n = l->first; /* Now the node is reset to the first position of the list in order to read the informations. */
 	
 	do{
-		fgets(ignoreline, 200, fp); /*Ignores again the header*/
+		fgets(ignoreline, 200, fp); /* Ignores again the header. */
 		fscanf(fp, "%d", &n->site->code);
 		if (!GB_CodeCheck(n->site->code, l)) return ERROR;
 		fscanf(fp, ",%s[^,],%d,%s[^,],", n->site->name, &n->site->relev, n->site->link);
