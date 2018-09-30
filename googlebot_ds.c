@@ -44,7 +44,7 @@ int GB_InsertKeyWord(LIST* l, int code){
 	char dump = ' ';
 	int count = 0;
 	int k = 0;
-	while (n->site->keyw[count][0] != '+' || count > 10){
+	while (n->site->keyw[count][0] != '#' || count > 10){
 		count++;
 	}
 	if (count > 10){
@@ -73,9 +73,9 @@ int GB_GetSiteStdin(LIST* l) {
 	new->site->code = code;
 	fflush(stdin);
 	
-	char* name = NULL;
-	name = fgets(name, 50, stdin);	  
-	new->site->name = name;
+	char name2[100];
+	fgets(name2, 100, stdin);
+	strcpy(new->site->name, name2);	  
 	fflush(stdin);
 	
 	int relev = fscanf(stdin, "%d", &relev);  
@@ -83,9 +83,9 @@ int GB_GetSiteStdin(LIST* l) {
 	new->site->relev = relev;
 	fflush(stdin);
 	
-	char* link = NULL;
-	link = fgets(link, 100, stdin);     
-	new->site->link = link;
+	char link2[100];
+	fgets(link2, 100, stdin);
+	strcpy(new->site->link, link2);     
 	fflush(stdin);
 	
 	char dump = ' ';

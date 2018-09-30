@@ -9,13 +9,12 @@
 #define boolean int
 
 NODE* GB_NewNode (void) {
-	NODE* new = (NODE*) malloc(sizeof (NODE));
+	NODE* new = (NODE*) malloc(sizeof(NODE));
 	if (new == NULL){
 		perror("Fatal error: not enough memory.\n");
 		exit(EXIT_FAILURE);
 	}
-	new->next = NULL;
-	new->site = NULL; 
+	new->next = NULL; 
 	return new;
 }
 

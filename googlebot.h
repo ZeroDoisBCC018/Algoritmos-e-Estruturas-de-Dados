@@ -29,9 +29,9 @@ typedef struct list_ {
 /* Data structure for storing site properties, gathered from the csv file. */
 struct site_ {
 	int code;
-	char* name;
+	char name[100];
 	int relev;
-	char* link;
+	char link[100];
 	char keyw[10][50];
 };
 
