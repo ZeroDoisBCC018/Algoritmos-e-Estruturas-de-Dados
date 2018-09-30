@@ -72,8 +72,7 @@ removê-los, atualizar relevância e inserir tags (keywords). Para confirmar aç
 o código 1 é aceito. Todas as opções de menu podem ser mostradas novamente no console
 inserindo o respectivo código que é mostrado em cada seção.
 	Caso seu computador não possua espaço de memória stack, heap ou de dados, o programa
-será abortado na tentativa de criar arquivos ou listas para operar a base de dados. 
-   
+será abortado na tentativa de criar arquivos ou listas para operar a base de dados.   
     
 *Justificativas para as escolhas de estruturas:
     -O grupo tomou a decisão de usar listas ligadas simplesmente encadeadas como norte para o estruturamento dos dados. Também consideramos
@@ -88,8 +87,8 @@ será abortado na tentativa de criar arquivos ou listas para operar a base de da
 
 	A inserção e remoção de ítens foi feita  a partir de reassimilação de ponteiros auxiliares (através de funções iterativas),
 de forma a não gerar necessidade de maiores acessos à memória em função de empilhamentos recursivos. Consideramos
-que a inserção não é realizada de forma ordenada, adequando o programa a uma amplitude maior de experiências de usuário. Assim,
-as operações de remoção e inserção foram planejadas desconsiderando a ordenação do vetor, tendo como parâmetros um código específico a ser atribuído a um site, ou ainda sua posição no primeiro ou último lugar da lista.
+que a inserção é realizada de forma ordenada, já que os elementos possuem um código atrelado. Assim,
+as operações de remoção e inserção foram planejadas considerando a ordenação do vetor, tendo como parâmetros um código específico a ser atribuído a um site, ou ainda sua posição no primeiro ou último lugar da lista.
 	A inserção de novos dados no CSV foi feita a partir da administração de mudanças em structs, forma mais maleável de lidar com os inputs do usuário, que sobrescrevem o arquivo original por completo à chamada da função de atualização da database. Isso permite maior flexibilidade de acesso e atualização dos dados originais sem gerar necessidade de navegação contínua do CSV.
-	Já a busca foi baseada no algoritmo de merge sort readaptado para uma lista encadeada sem nó-cabeça. O merge sort e sua natureza nlogn se demonstrou especialmente apto para a ordenação de listas encadeadas, apesar da necessidade de uso substancial de memória auxiliar, que é compensado pelo processamento facilitado.
-
+	Já a busca foi baseada no próprio item código, atividade simpĺes dado que naturalmente a lista estará ordenada.
+	O merge sort, readaptado para listas ligadas simplesmente encadeadas sem nó-cabeça, e sua complexidade nlogn se demonstrou especialmente apto para a ordenação de listas encadeadas, apesar da necessidade de uso substancial de memória auxiliar, que é compensado pelo processamento facilitado.
