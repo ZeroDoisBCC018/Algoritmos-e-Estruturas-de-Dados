@@ -8,13 +8,25 @@
 #include <stdio.h>
 #define boolean int
 
+SITE* GB_NewSite (NODE* n){
+	if (n->site == NULL){
+		n->site = (SITE*) malloc (sizeof(SITE));
+		printf("Bonjour, Site allocation succesful muchacho! POLPETONE\n");
+	}
+	return n->site;
+} 
+
 NODE* GB_NewNode (void) {
 	NODE* new = (NODE*) malloc(sizeof(NODE));
 	if (new == NULL){
 		perror("Fatal error: not enough memory.\n");
 		exit(EXIT_FAILURE);
 	}
-	new->next = NULL; 
+	new->next = NULL;
+	new->site = GB_NewSite(new);
+	
+	if (new->site == NULL) printf ("AY CARAMBA PORPETONE HAY UN ERRITO EN NUEVO SITIO\n");
+	
 	return new;
 }
 

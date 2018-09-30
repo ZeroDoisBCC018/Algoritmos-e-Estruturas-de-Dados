@@ -1,3 +1,3 @@
 all:
-	gcc $(wildcard *.c *.h) -o main -std=c89 -Wall -g
+	gcc $(wildcard *.c *.h) -o main -std=c89 -Wall 
 

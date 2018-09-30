@@ -228,8 +228,8 @@ int main(int argc, char* argv[]){
 	
 	fprintf(stdout, "Please insert the name of your .csv file:\n");
 	
-	char* fn = NULL;
-	scanf("%m[^\n] ", &fn);
+	char fn[1024];
+	scanf("%s", fn);
 	
 	if (fn == NULL){
 		perror("Input error: missing filename.\n");
@@ -248,7 +248,6 @@ int main(int argc, char* argv[]){
 	}
 	
 	welcome(fp, fn);
-	free(fn);
 	
 	return EXIT_SUCCESS;
 }
