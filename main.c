@@ -18,7 +18,7 @@ void print_first(void){
 	std_divide();
 	fprintf(stdout, "Modify the database: you can change the properties of a given site directly.\n");
 	fprintf(stdout, "Choose one of the following options:\n");
-	fprintf(stdout, "\t1 - Insert a new site;\n\t2 - Remove a site from the database;\n\t3 - Update the relevance of a specific site;\n");
+	fprintf(stdout, "\t11 - Insert a new site;\n\t2 - Remove a site from the database;\n\t3 - Update the relevance of a specific site;\n");
 	fprintf(stdout, "\t4 - Insert a new keyword to a site;\n\t5 - Print this menu section again;\n\t6 - Return to the main menu.\n");
 }
 
@@ -26,17 +26,16 @@ void new_site(void){
 	
 	int a;
 	fprintf(stdout, "You're about to insert a new site on the database.\n");
-	fprintf(stdout, "To cancel this operation, insert code 0. To continue please insert code 1.\n");
+	fprintf(stdout, "To cancel this operation, insert code 0. To continue please insert code 12.\n");
 	fscanf(stdin, "%d", &a);
 	printf("opcao de confirmacao para insercao de site e = %d\n", a);
 	if (a == 0) return;
-	while(a != 1){
+	while(a != 12){
 		fprintf(stdout, "Unknown code. To cancel this operation, insert code 0. To continue please insert code 1.\n");
 		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &a);
 		if (a == 0) return;
 	}
-	a = 3200;
 	std_divide();
 	fprintf(stdout, "To insert your new site, please type these properties on the following order:\n");
 	fprintf(stdout, "(Press enter after each typed propertie)\n");
@@ -143,7 +142,7 @@ void first(void){
 		fscanf(stdin, "%d", &op1);
 		printf("opcao de first recebida foi %d\n", op1);
 		switch(op1){
-			case 1: new_site(); break;
+			case 11: new_site(); break;
 			case 2: remove_site(); break;
 			case 3: update_rel(); break;
 			case 4: new_keyw(); break;
@@ -183,7 +182,7 @@ void second(CSV fp, char* fn){
 }
 
 void menu_options(void){	
-	fprintf(stdout, "\t1 - Modify the database;\n\t2 - Update the database;\n\t3 - Print the menu options on the screen again;\n\t4 - Exit the Googlebot.\n");
+	fprintf(stdout, "\t10 - Modify the database;\n\t2 - Update the database;\n\t3 - Print the menu options on the screen again;\n\t4 - Exit the Googlebot.\n");
 	std_divide();
 }
 
@@ -210,7 +209,7 @@ void menu(CSV fp, char* fn){
 		fscanf(stdin, "%d", &op0);
 		printf("1a opcao de menu e %d\n", op0); 
 		switch(op0){
-			case 1: first(); break;
+			case 10: first(); break;
 			case 2: second(fp, fn); break;
 			case 3: menu_options(); break;
 			case 4:	break; 

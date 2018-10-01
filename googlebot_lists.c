@@ -240,7 +240,7 @@ LIST* GB_Merge (LIST* lfirst, LIST* lsecond) {
 int InsertNodeAtPosition (LIST* l, NODE* n, int code){
 	if (GB_CheckInvalidList(l)) return ERROR;
 	if (n == NULL) n = GB_NewNode();
-	if (GB_CheckEmptyList(l)) {
+	if (!GB_CheckEmptyList(l)) {
 		l->first = n;
 		l->last = n;
 		l->size = 1;

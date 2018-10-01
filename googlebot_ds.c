@@ -65,43 +65,46 @@ int GB_GetSiteStdin(LIST* l) {
 	if (l == NULL) return ERROR;
 	if (GB_CheckInvalidList(l)) return ERROR;
 	NODE* new = GB_NewNode(); /* A new node is created. */
-	int k = 0;
+	if (new == NULL) printf("erro de alocação em cria nó, chamado em getsite\n");
 	
-	fflush(stdin);
-	/* Each one of the new site's propertie is read from the standard input and allocated in its node position of the list. */
-	int code = fscanf(stdin, "%d", &code);	  
+	/*fflush(stdin);*/
+	/* Each one of the new site's properties is read from the standard input and allocated in its node position of the list. */
+	int code = 0;
+	fscanf(stdin, " %d", &code);	  
 	printf("O codigo (getstdin) inserido foi %d\n", code);  
 	if (code <= 0 || code > 9999) return ERROR;
 	new->site->code = code;
 	/*fflush(stdin);*/
 	
 	char name2[100];
-	fgets(name2, 100, stdin);
+	fscanf(stdin, "%s", name2);
 	printf("O nome inserido (getstdin) foi %s\n", name2);
 	strcpy(new->site->name, name2);	  
 	/*fflush(stdin);*/
 	
-	int relev = fscanf(stdin, "%d", &relev);  
+	int relev = 0;
+	fscanf(stdin, " %d", &relev);  
 	if (relev < 0 || relev > 1000) return ERROR;
 	new->site->relev = relev;
-	printf("relevancia (getstdin) inserida\n");
+	printf("relevancia (getstdin) inserida %d\n", relev);
 	/*fflush(stdin);*/
 	
 	char link2[100];
-	fgets(link2, 100, stdin);
-	strcpy(new->site->link, link2);     
-	/*fflush(stdin);*/
+	fscanf(stdin, "%s", link2);
+	strcpy(new->site->link, link2);
+	printf("link (getstdin) inserida %s\n", link2);    
 	
-	char dump = ' ';
-	int j = 0;
-	while (dump != '\n'){
-		dump = getchar();
-		new->site->keyw[j][k] = dump;
-		k++;
-		if(dump == ','){
-			j++;
-			k = 0;
+	char kw[50];
+	int j = 0, len = 0, cl = 0, m = 0;
+	while (cl < 50){
+		scanf(" %[^\n]", kw);
+		if (strcmp(kw, "exit") == 0) break;
+		len = strlen(kw);	
+		for(m = 0; m < len; m++){
+			new->site->keyw[j][m] = kw[m];
 		}
+		j++;
+		cl++;
 	}
 	InsertNodeAtPosition(l, new, code);	
 	return SUCCESS;
