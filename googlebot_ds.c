@@ -67,26 +67,30 @@ int GB_GetSiteStdin(LIST* l) {
 	NODE* new = GB_NewNode(); /* A new node is created. */
 	int k = 0;
 	
+	fflush(stdin);
 	/* Each one of the new site's propertie is read from the standard input and allocated in its node position of the list. */
 	int code = fscanf(stdin, "%d", &code);	  
+	printf("O codigo (getstdin) inserido foi %d\n", code);  
 	if (code <= 0 || code > 9999) return ERROR;
 	new->site->code = code;
-	fflush(stdin);
+	/*fflush(stdin);*/
 	
 	char name2[100];
 	fgets(name2, 100, stdin);
+	printf("O nome inserido (getstdin) foi %s\n", name2);
 	strcpy(new->site->name, name2);	  
-	fflush(stdin);
+	/*fflush(stdin);*/
 	
 	int relev = fscanf(stdin, "%d", &relev);  
 	if (relev < 0 || relev > 1000) return ERROR;
 	new->site->relev = relev;
-	fflush(stdin);
+	printf("relevancia (getstdin) inserida\n");
+	/*fflush(stdin);*/
 	
 	char link2[100];
 	fgets(link2, 100, stdin);
 	strcpy(new->site->link, link2);     
-	fflush(stdin);
+	/*fflush(stdin);*/
 	
 	char dump = ' ';
 	int j = 0;

@@ -28,13 +28,15 @@ void new_site(void){
 	fprintf(stdout, "You're about to insert a new site on the database.\n");
 	fprintf(stdout, "To cancel this operation, insert code 0. To continue please insert code 1.\n");
 	fscanf(stdin, "%d", &a);
+	printf("opcao de confirmacao para insercao de site e = %d\n", a);
 	if (a == 0) return;
 	while(a != 1){
 		fprintf(stdout, "Unknown code. To cancel this operation, insert code 0. To continue please insert code 1.\n");
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &a);
 		if (a == 0) return;
 	}
+	a = 3200;
 	std_divide();
 	fprintf(stdout, "To insert your new site, please type these properties on the following order:\n");
 	fprintf(stdout, "(Press enter after each typed propertie)\n");
@@ -51,7 +53,7 @@ void remove_site(void){
 	if (b == 0) return;
 	while(b != 1){
 		fprintf(stdout, "Unknown code. To cancel this operation, insert code 0. To continue please insert code 1.\n");
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &b);
 		if (b == 0) return;
 	}
@@ -84,7 +86,7 @@ void update_rel(void){
 	if (c == 0) return;
 	while(c != 1){
 		fprintf(stdout, "Unknown code. To cancel this operation, insert code 0. To continue please insert code 1.\n");
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &c);
 		if (c == 0) return;
 	}
@@ -112,7 +114,7 @@ void new_keyw(void){
 	if (d == 0) return;
 	while (d != 1){
 		fprintf(stdout, "Unknown code. To cancel this operation, insert code 0. To continue please insert code 1.\n");
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &d);
 		if (d == 0) return;
 	}
@@ -137,8 +139,9 @@ void first(void){
 	print_first();
 	
 	while(op1 != 6){
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &op1);
+		printf("opcao de first recebida foi %d\n", op1);
 		switch(op1){
 			case 1: new_site(); break;
 			case 2: remove_site(); break;
@@ -185,7 +188,7 @@ void menu_options(void){
 }
 
 void welcome(CSV fp, char* fn){
-	fflush(stdin);
+	/*fflush(stdin);*/
 	std_divide();
 	fprintf(stdout, "Googlebot SCC0202-2018 Project. Developed by Joao Villaca, Bruno Gazoni and Bruno Baldissera.\n");
 	fprintf(stdout, "ICMC/USP - Brazil, SP, Sao Carlos. This software is distributed as a free software under the\n");
@@ -203,8 +206,9 @@ void menu(CSV fp, char* fn){
 	std_divide();
 	
 	while(op0 != 4){
-		fflush(stdin);
+		/*fflush(stdin);*/
 		fscanf(stdin, "%d", &op0);
+		printf("1a opcao de menu e %d\n", op0); 
 		switch(op0){
 			case 1: first(); break;
 			case 2: second(fp, fn); break;
@@ -238,6 +242,7 @@ int main(int argc, char* argv[]){
 	
 	char* fn = NULL;
 	scanf("%m[^\n]", &fn);
+	printf("file name is %s \n", fn);
 	
 	if (fn == NULL){
 		perror("Input error: missing filename.\n");
