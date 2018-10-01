@@ -139,26 +139,30 @@ int GB_ReadCSV (CSV fp, LIST* l){
 }
 
 int GB_UpdateDataBase (CSV fp, char* filename, LIST* l) {
+	if (fp == NULL){
+		perror("File not opened.\n");
+		return ERROR;
+	}
+	GB_CloseCSV(fp);
+	GB_OpenCSVwrite(fp, filename);
+	if (fp == NULL){
+		perror("An error ocurred while overwriting the file.\n");
+		returno ERROR;
+	}
 	int i = 0, j = 0;
 	NODE* aux;
 	aux = l->first;
 	char c = ' ';
-	if(fp == NULL){
-		perror("File not opened.\n");
-		return ERROR;
-	}
-	fflush(fp);
-	GB_CloseCSV(fp);
-	GB_OpenCSVwrite(fp, filename);
 	while (aux->next != l->last){
-		fprintf(fp, "%04d,%s,%s,", aux->site->code, aux->site->name, aux->site->link);
+		fprintf(fp, "%04d,%s,%s", aux->site->code, aux->site->name, aux->site->link);
 		do{
 			for(i = 0; i < 10; i++){
+				fprintf(fp, ",");
 				for(j = 0; j < 50; j++){
 					fprintf(fp, "%c", aux->site->keyw[i][j]);
 				}
 			}
-		}while (c != '\n');
+		}while (c != '\0');
 		aux = aux->next;
 	}
 	GB_CloseCSV(fp);
