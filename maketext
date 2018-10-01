@@ -5,14 +5,14 @@ atom:
 sublime:
 	subl $(wildcard *.c *.h)
 vim:
-	vim $(tabe: main.c)
-	vim $(tabe: googlebot_ds.c)
-	vim $(tabe: googlebot_lists.c)
-	vim $(tabe: googlebot_csv.c)
-	vim $(tabe: googlebot.h)
+	vim $tabe: main.c
+	vim $tabe: googlebot_ds.c
+	vim $tabe: googlebot_lists.c
+	vim $tabe: googlebot_csv.c
+	vim $tabe: googlebot.h
 gedit:
 	gedit $(wildcard *.c *.h)
 mousepad:
 	mousepad $(wildcard *.c *.h)
 pdf:
-	qpdf $(README.pdf)
+	qpdf $README.pdf
