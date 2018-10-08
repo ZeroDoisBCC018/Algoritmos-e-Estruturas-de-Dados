@@ -16,5 +16,3 @@ gedit:
 	gedit $(wildcard *.c *.h)
 mousepad:
 	mousepad $(wildcard *.c *.h)
-pdf:
-	qpdf $README.pdf
