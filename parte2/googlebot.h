@@ -33,7 +33,7 @@ typedef struct trienode{
 
 LIST* newlist(void);
 
-SITE* newsite (void);
+SITE* newsite(void);
 
 bool invalidlist(LIST* l);
 
