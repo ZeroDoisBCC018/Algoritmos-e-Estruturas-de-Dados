@@ -37,10 +37,13 @@ LIST* newlist(void);
 
 SITE* newsite(void);
 
+bool emptylist(LIST* l);
+
 /* Returns TRUE if the size is greater than 9999 or lesser than 0. */
 bool invalidlist(LIST* l);
 
-bool emptylist(LIST* l);
+/* Returns 1 if there is any break between the pointers of the list. */
+bool listerror(LIST* l);
 
 /* 
  * Lists length starts at 1. 0 is returned if the list is empty.
@@ -55,14 +58,25 @@ int insertsite(LIST* l, SITE* s, int pos);
 /*
  * Mode 'c' = search by code;
  * Mode 'n' = search by name;
+ * Index must be 1;
  * Any other character will return NULL.
  * In the extra argument field: the matching code/string.
  * Example: 600 for code mode. "Google" for name mode.
  */
-SITE* searchsite(LIST* l, const char mode, ...);
+SITE* searchsite(LIST* l, const char mode, int index, ...);
 
 int site_newrelevance(SITE* s, int newrel);
 
-void eraselist(LIST* l);
+/*
+ * Mode 'c' = search by code;
+ * Mode 'n' = search by name;
+ * Index must be 1;
+ * Any other character will return FAIL.
+ * In the extra argument field: the matching code/string.
+ * Works like the searchsite function to erase a site in the middle of the list.
+ */
+int erasesite(LIST* l, const char mode, int index, ...);
+
+void endlist(LIST* l);
 
 #endif
