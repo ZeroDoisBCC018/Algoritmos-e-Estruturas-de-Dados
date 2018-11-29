@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct site{
+typedef struct node{
 	int code, rel;
 	char link[1025], name[65];
 	char tag[10][51];
@@ -21,24 +21,23 @@ typedef struct trienode{
 	SITE** results;
 }TRIE_N;
 
-typedef struct node_ NODE;
-
 TRIE_N* create_node(TRIE_N* n, SITE* s, int lsize){
 	printf("new node being born\n");
 	n = (TRIE_N*) malloc(sizeof(TRIE_N));
 	n->end = 0;
 	n->results = (SITE**) malloc(sizeof(SITE*) * lsize);
-	for(int s = 0; s < lsize; s++){
-		n->results[s] = NULL;
+	for(int i = 0; i < lsize; i++){
+		n->results[i] = NULL;
 	}
-	for(int i = 0; i < 26; i++){ /*Atribui todos os nós 'filhos' do nó criado para NULO*/
-		n->son[i] = NULL;
+	for(int j = 0; j < 26; j++){ /*Atribui todos os nós 'filhos' do nó criado para NULO*/
+		n->son[j] = NULL;
 	}
 	return n;
 }
 
 void insert_word(char word[], TRIE_N* root, SITE* s, int lsize){
 	TRIE_N* aux = root;
+	short flag = 0;
 	printf("no aux aponta para root\n");
 	int len = strlen(word);
 	printf("strlen efetuado = %d\n", len);
@@ -49,9 +48,11 @@ void insert_word(char word[], TRIE_N* root, SITE* s, int lsize){
 		if (aux->son[pos] == NULL) aux->son[pos] = create_node(aux->son[pos], s, lsize);
 		if (i == len-1){
 			aux->son[pos]->end = 1;
-			for(int j = 0; j < (sizeof(root->results)/sizeof(SITE*)); j++){
-				if(aux->son[pos]->results[j] == NULL) aux->son[pos]->results[j] = s;
-				break;
+			for(int j = 0; j < lsize; j++){
+				if(aux->son[pos]->results[j] == NULL){
+					 aux->son[pos]->results[j] = s;
+					 break;
+				}	
 			} 
 			break;
 		} 
@@ -59,7 +60,7 @@ void insert_word(char word[], TRIE_N* root, SITE* s, int lsize){
 	}
 }
 
-void search_keyword(char* word, TRIE_N* root){
+void search_keyword(char* word, TRIE_N* root, int lsize){
 	printf("word being searched: %s\n", word);
 	TRIE_N* aux = root;
 	int len = strlen(word);
@@ -73,9 +74,9 @@ void search_keyword(char* word, TRIE_N* root){
 		else if (i == len-1){
 		    if (aux->son[pos]->end != 1) printf("keyword not found\n");
 		    else {
-		    	for(int j = 0; j < (sizeof(aux->results)/sizeof(SITE*)); j++){
-		    		if(aux->son[pos]->results[j] != NULL) printf("keyword was found in %s\n", aux->son[pos]->results[j]->name);
- 
+		    	for(int j = 0; j < lsize; j++){
+				//printf("searching: %s in %dst site\n", word, j+1);
+		    		if(aux->son[pos]->results[j] != NULL) printf("keyword was found in %s, url is %s\n", aux->son[pos]->results[j]->name, aux->son[pos]->results[j]->link); 
 		   	}
 		    }
 		    break;
@@ -192,35 +193,49 @@ void free_trie(TRIE_N* node){
 }*/
 
 int main(int argc, char* argv[]){
-	
+	int lsize = 50;
 	SITE* teste = (SITE*) malloc(sizeof(SITE));
-	teste->code = 0345;
-	teste->rel = 9987;
+	teste->code = 6345;
+	teste->rel = 9981;
 	strcpy(teste->link, "boss.com");
 	strcpy(teste->name, "boos");
-	strcpy(teste->tag[1], "bomdia");
-	strcpy(teste->tag[2], "boanoite");
-	strcpy(teste->tag[3], "boamanha");
-	teste->next = NULL;
+	strcpy(teste->tag[1], "bomdia1");
+	strcpy(teste->tag[2], "boanoite1");
+	strcpy(teste->tag[3], "boamanha1");
 	printf("site teste criado\n");
 	
+	SITE* teste2 = (SITE*) malloc(sizeof(SITE));
+	teste2->code = 0345;
+	teste2->rel = 9987;
+	strcpy(teste2->link, "baus2.com");
+	strcpy(teste2->name, "n word");
+	strcpy(teste2->tag[1], "bomdia2");
+	strcpy(teste2->tag[2], "boanoite2");
+	strcpy(teste2->tag[3], "boamanha2");
+	teste2->next = NULL;
+	printf("site teste2 criado\n");
+	
+	teste->next = teste2;
+
 	TRIE_N* root = NULL;
 	root = create_node(root, teste, 5);
 	printf("no raiz da trie criado\n");
 
-	insert_word("black", root, teste, 50);
-	insert_word("brutal", root, teste, 50);
-	insert_word("boss", root, teste, 50);
-	insert_word("hes", root, teste, 50);
-	insert_word("the", root, teste, 50);
-	insert_word("boss", root, teste, 50);
-	insert_word("boss niba", root, teste, 50);
+	insert_word("black", root, teste, lsize);
+	insert_word("black", root, teste2, lsize);
+	insert_word("brutal", root, teste, lsize);
+	insert_word("boss", root, teste, lsize);
+	insert_word("hes", root, teste, lsize);
+	insert_word("the", root, teste, lsize);
+	insert_word("boss", root, teste2, lsize);
+	insert_word("bossniba", root, teste, lsize);
 
-	search_keyword("white", root);
-	search_keyword("brute", root);
-	search_keyword("black", root);
-	search_keyword("boss", root);
+	search_keyword("white", root, lsize);
+	search_keyword("brute", root, lsize);
+	search_keyword("black", root, lsize);
+	search_keyword("boss", root, lsize);
 
 	free_trie(root);
+
 	return 0;
 }
