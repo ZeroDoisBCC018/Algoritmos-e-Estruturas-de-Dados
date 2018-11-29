@@ -156,7 +156,7 @@ void bucket (LIST* desordenada, int digito)
 	
 	while (percorre != NULL)
 	{
-		casa = separadigito(percorre->relev, digito);
+		casa = separadigito(percorre->rel, digito);
 		buckpush(baldes[casa], percorre);
 		
 		percorre = percorre->next;
@@ -177,7 +177,7 @@ void bucket (LIST* desordenada, int digito)
 	
 	for (i = 0; i < 10; i++)
 	{
-		eraselist(baldes[i]);
+		endlist(baldes[i]);
 	}
 	
 	free(baldes);
