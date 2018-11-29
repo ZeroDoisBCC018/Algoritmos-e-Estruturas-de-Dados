@@ -78,6 +78,8 @@ int site_newrelevance(SITE* s, int newrel);
  */
 int erasesite(LIST* l, const char mode, int index, ...);
 
+void printlist(LIST* l);
+
 void endlist(LIST* l);
 
 int buckpush(LIST* l, SITE* s);

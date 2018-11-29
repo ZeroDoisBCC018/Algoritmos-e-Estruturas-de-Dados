@@ -154,6 +154,27 @@ int site_newrelevance(SITE* s, int newrel){
 		return SUCCESS;
 }
 
+void printlist(LIST* l){
+	if(emptylist(l)){
+		fprintf(stdout, "This list is empty.\n");
+		return;
+	}
+	if(listerror(l)) return;
+	SITE* aux = l->first;
+	while(aux != NULL){
+		fprintf(stdout, "\"%s\" (Code %04d):\n", aux->name, aux->code);
+		fprintf(stdout, "Link: <%s>\n", aux->link);
+		fprintf(stdout, "Current relevance: %04d", aux->rel);
+		puts("Site tags/keywords:");
+		int i;
+		for(i = 0; i < 10; i++){
+			fprintf(stdout, "--");
+			puts(aux->tag[i]);
+		}
+		fprintf(stdout, "\n");
+	}
+}
+
 int erasesite(LIST* l, const char mode, int index, ...){
 	if(emptylist(l)) return FAIL;
 	if(listerror(l)) return FAIL;

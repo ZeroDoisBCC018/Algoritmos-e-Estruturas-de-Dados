@@ -56,6 +56,8 @@ int main(void){
 	insertsite(l, site6, 5);
 	insertsite(l, site5, 6);
 	if(!listerror(l)) printf("Lista aparenta nao ter erros.\n");
+	radix(l);
+	printlist(l);
 	SITE *aux1, *aux2;
 	aux1 = searchsite(l, 'n', 1, "facebook");
 	puts(aux1->link);
