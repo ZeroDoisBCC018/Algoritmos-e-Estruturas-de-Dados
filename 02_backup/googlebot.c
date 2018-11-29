@@ -250,79 +250,62 @@ void endlist(LIST* l){
 
 /*===========================================================*/
 int buckpush (LIST* l, SITE* s){
-	if(invalidlist(l) || l->size == 9999) return ERROR;
 	
+	if(invalidlist(l) || l->size == 9999) return ERROR;
 	if(emptylist(l)){
 		l->first = s;
 		l->last = s;
 		if(DEBUG) printf("Site %s inserido com sucesso.\n", s->name);
 		return SUCCESS;
 	}
-	
-	else {
+	else{
 
 		l->last->next = s;
 		l->last = s;
 		l->last->next = NULL;
 		l->size++;
 		return SUCCESS;
-	}
-		
+	}	
 }
 
+int separadigito (int recebido, int posicao){
+	return(recebido/(int)pow(10, (posicao-1))%10);
+}
 
-int separadigito (int recebido, int posicao)
-{
-	int digito;
+LIST* concatena (LIST** listor){
 	
-	digito = (recebido / (int) pow(10, (posicao-1)) %10);
-		
-	return digito;
-}
-
-LIST* concatena (LIST** listor)
-{
 	int i;
 	LIST* concatenada;
 	concatenada = newlist();
-	
 	SITE* percorre;
 	
-	for (i = 0; i < 10; i++)
-	{
+	for (i = 0; i < 10; i++){
 		percorre = listor[i]->first;
 		
-		while (percorre != NULL)
-		{
+		while (percorre != NULL){
 			buckpush(concatenada, percorre->site);
 			percorre = percorre->next;
 		}
 	}
-	
 	free(percorre);
-	
 	return concatenada;
 }
 
-void bucket (LIST* desordenada, int digito)
-{
+void bucket (LIST* desordenada, int digito){
+	
 	LIST* ordenada;
 	LIST** baldes = (LIST**) malloc (sizeof(LIST*) * 10);
 	int casa, i;
 	SITE* percorre;
 	
-	for (i = 0; i < 10; i++)
-	{
+	for (i = 0; i < 10; i++){
 		baldes[i] = newlist();
 	}
-	
 	percorre = desordenada->first;
 	
-	while (percorre != NULL)
-	{
+	while (percorre != NULL){
 		casa = separadigito(percorre->relev, digito);
 		buckpush(baldes[casa], percorre);
-		
 		percorre = percorre->next;
 	}
 	
@@ -339,21 +322,15 @@ void bucket (LIST* desordenada, int digito)
 	
 	free(nosauxiliares);
 	
-	for (i = 0; i < 10; i++)
-	{
+	for (i = 0; i < 10; i++){
 		eraselist(baldes[i]);
 	}
-	
 	free(baldes);
 }
 
-
-void radix (LIST* l)
-{
+void radix (LIST* l){
 	int i;
-	
-	for (i = 1; i <= 4; i++)
-	{
+	for (i = 1; i <= 4; i++){
 		bucket (l, i);
 	}
 }
