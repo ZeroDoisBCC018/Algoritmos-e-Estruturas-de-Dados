@@ -51,10 +51,8 @@ bool listerror(LIST* l){
 	aux = l->first;
 	while(aux->next != NULL) aux = aux->next;
 	if(aux == l->last) return 0;
-	else{
-		fprintf(stderr, "The list is torn at some point. Returning error...");
-	}
-	return ERROR;
+	else fprintf(stderr, "The list is fragmented at some point. Returning error...");
+	return 1;
 }
 
 int listlength(LIST* l){
@@ -105,6 +103,7 @@ int insertsite(LIST* l, SITE* s, int pos){
 		}
 		s->next = aux->next->next;
 		aux->next = s;
+		l->size += 1;
 		if(DEBUG) printf("Site \"%s\" inserido com sucesso.\n", s->name);
 	}
 	return SUCCESS;
@@ -188,8 +187,7 @@ int erasesite(LIST* l, const char mode, int index, ...){
 					free(aux2);
 					break;
 				}
-				aux1 = aux2->next;
-				aux2->next = NULL;
+				aux1->next = aux2->next;
 				free(aux2);
 			}
 			break;
@@ -216,8 +214,7 @@ int erasesite(LIST* l, const char mode, int index, ...){
 					free(aux2);
 					break;
 				}
-				aux1 = aux2->next;
-				aux2->next = NULL;
+				aux1->next = aux2->next;
 				free(aux2);
 			}
 			break;
@@ -225,6 +222,7 @@ int erasesite(LIST* l, const char mode, int index, ...){
 			va_end(arg);
 			return FAIL;
 	}
+	l->size -= 1;
 	va_end(arg);
 	return SUCCESS;
 }
@@ -241,11 +239,121 @@ void endlist(LIST* l){
 	while(aux1 != NULL){
 		if(DEBUG) printf("Apagando o site \"%s\" da lista.\n", aux2->name);
 		free(aux2);
-		aux2 = aux1;
+		aux2 = aux2->next;
 		aux1 = aux1->next;
 	}
 	if(DEBUG) printf("Apagando o site \"%s\" da lista.\n", aux2->name);
 	free(aux2);
 	if(DEBUG) printf("Lista destruida com sucesso.\n");
 	free(l);
+}
+
+/*===========================================================*/
+int buckpush (LIST* l, SITE* s){
+	if(invalidlist(l) || l->size == 9999) return ERROR;
+	
+	if(emptylist(l)){
+		l->first = s;
+		l->last = s;
+		if(DEBUG) printf("Site %s inserido com sucesso.\n", s->name);
+		return SUCCESS;
+	}
+	
+	else {
+
+		l->last->next = s;
+		l->last = s;
+		l->last->next = NULL;
+		l->size++;
+		return SUCCESS;
+	}
+		
+}
+
+
+int separadigito (int recebido, int posicao)
+{
+	int digito;
+	
+	digito = (recebido / (int) pow(10, (posicao-1)) %10);
+		
+	return digito;
+}
+
+LIST* concatena (LIST** listor)
+{
+	int i;
+	LIST* concatenada;
+	concatenada = newlist();
+	
+	SITE* percorre;
+	
+	for (i = 0; i < 10; i++)
+	{
+		percorre = listor[i]->first;
+		
+		while (percorre != NULL)
+		{
+			buckpush(concatenada, percorre->site);
+			percorre = percorre->next;
+		}
+	}
+	
+	free(percorre);
+	
+	return concatenada;
+}
+
+void bucket (LIST* desordenada, int digito)
+{
+	LIST* ordenada;
+	LIST** baldes = (LIST**) malloc (sizeof(LIST*) * 10);
+	int casa, i;
+	SITE* percorre;
+	
+	for (i = 0; i < 10; i++)
+	{
+		baldes[i] = newlist();
+	}
+	
+	percorre = desordenada->first;
+	
+	while (percorre != NULL)
+	{
+		casa = separadigito(percorre->relev, digito);
+		buckpush(baldes[casa], percorre);
+		
+		percorre = percorre->next;
+	}
+	
+	ordenada = concatena(baldes);
+	
+	LIST* nosauxiliares;
+	nosauxiliares = newlist();
+	
+	nosauxiliares->first = ordenada->first;
+	nosauxiliares->last = ordenada->last;
+	
+	desordenada->first = nosauxiliares->first;
+	desordenada->last = nosauxiliares->last;
+	
+	free(nosauxiliares);
+	
+	for (i = 0; i < 10; i++)
+	{
+		eraselist(baldes[i]);
+	}
+	
+	free(baldes);
+}
+
+
+void radix (LIST* l)
+{
+	int i;
+	
+	for (i = 1; i <= 4; i++)
+	{
+		bucket (l, i);
+	}
 }

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <stdarg.h>
 #define SUCCESS 1
 #define FAIL 0
@@ -78,5 +79,15 @@ int site_newrelevance(SITE* s, int newrel);
 int erasesite(LIST* l, const char mode, int index, ...);
 
 void endlist(LIST* l);
+
+int buckpush(LIST* l, SITE* s);
+
+int separadigito(int recebido, int posicao);
+
+LIST* concatena (LIST** listor);
+
+void bucket (LIST* desordenada, int digito);
+
+void radix (LIST* l);
 
 #endif
