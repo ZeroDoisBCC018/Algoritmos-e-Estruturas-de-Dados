@@ -112,4 +112,6 @@ int readcsv (CSV fp, LIST* l, TRIE_N* root);
 
 TRIE_N* create_node(TRIE_N* n, SITE* s, int lsize);
 
+void update_database (CSV csv, char* name, LIST* list);
+
 #endif
