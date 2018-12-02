@@ -179,7 +179,7 @@ void second(CSV fp, char* fn){
 }
 
 void menu_options(void){	
-	fprintf(stdout, "\t10 - Modify the database;\n\t2 - Update the database;\n3 - Print the database;\n\t4 - Print the menu options on the screen again;\n\t5 - Browse with Googlebot\n\t6 - Exit the Googlebot.\n");
+	fprintf(stdout, "\t1 - Modify the database;\n\t2 - Update the database;\n3 - Print the database;\n\t4 - Print the menu options on the screen again;\n\t5 - Browse with Googlebot\n\t6 - Exit the Googlebot.\n");
 	std_divide();
 }
 
